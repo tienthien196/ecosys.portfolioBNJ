@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ecosystem Support & Build by Me</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome & Google Fonts -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes glow {
+      0%, 100% { box-shadow: 0 0 15px rgba(59, 130, 246, 0.4); }
+      50% { box-shadow: 0 0 30px rgba(139, 92, 246, 0.6); }
+    }
+
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -100% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    @keyframes scaleIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes bounceIn {
+      0% { transform: scale(0.3); opacity: 0; }
+      50% { transform: scale(1.05); opacity: 1; }
+      70% { transform: scale(0.9); }
+      100% { transform: scale(1); }
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1e1b2e, #1e293b);
+      overflow-x: hidden;
+      background-attachment: fixed;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .code-font {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Enhanced Navigation */
+    .nav-link {
+      @apply px-8 py-4 rounded-3xl font-semibold transition-all duration-500 flex items-center gap-4 cursor-pointer relative;
+      background: rgba(56, 61, 75, 0.3);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transform: translateY(0);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .nav-link:hover {
+      @apply scale-110;
+      box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.3);
+      border-color: rgba(100, 150, 255, 0.3);
+      transform: translateY(-3px);
+    }
+
+    .nav-link.active {
+      @apply bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white font-bold;
+      border: none;
+      animation: glow 2s infinite;
+      box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+    }
+
+    .nav-link i {
+      transition: all 0.4s ease;
+      font-size: 1.2rem;
+    }
+
+    .nav-link:hover i {
+      transform: scale(1.3) rotate(15deg);
+    }
+
+    /* Card Styles */
+    .feature-card {
+      @apply rounded-3xl p-8 border transition-all duration-700 bg-slate-800/40 backdrop-blur-xl shadow-2xl;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transform: translateY(0);
+      opacity: 0;
+      animation: slideIn 0.8s forwards;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0));
+      pointer-events: none;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 
+        0 25px 50px -12px rgba(0, 0, 0, 0.4),
+        0 15px 25px -10px rgba(0, 0, 0, 0.3),
+        0 0 40px rgba(59, 130, 246, 0.2);
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+
+    /* Gradient Text */
+    .gradient-text {
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6, #06b6d4, #34d399);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      background-size: 300% 100%;
+      animation: shimmer 3s ease infinite;
+    }
+
+    /* Section Header */
+    .section-header {
+      @apply text-5xl md:text-6xl font-extrabold mb-8 relative inline-block;
+      animation: scaleIn 0.8s ease-out;
+    }
+
+    .section-header::after {
+      content: '';
+      @apply absolute bottom-0 left-0 h-1 rounded-full bg-gradient-to-r from-blue-500 to-purple-600;
+      width: 60px;
+      transition: width 0.6s ease;
+    }
+
+    .section-header:hover::after {
+      width: 100%;
+    }
+
+    /* Content Section */
+    .content-section {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.8s ease;
+    }
+
+    .content-section.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Branch Icons */
+    .branch-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      animation: rotate 10s linear infinite;
+    }
+
+    /* Floating Elements */
+    .floating {
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+
+    /* Delayed animations */
+    .feature-card:nth-child(1) { animation-delay: 0.3s; }
+    .feature-card:nth-child(2) { animation-delay: 0.6s; }
+    .feature-card:nth-child(3) { animation-delay: 0.9s; }
+
+    /* Background Elements */
+    .bg-element {
+      position: fixed;
+      z-index: 0;
+      opacity: 0.15;
+    }
+
+    .bg-circle {
+      border-radius: 50%;
+      filter: blur(20px);
+    }
+
+    .bg-cube {
+      transform: rotateX(45deg) rotateZ(45deg);
+      animation: rotate 20s linear infinite;
+    }
+
+    /* Button Styles */
+    .action-button {
+      @apply px-8 py-4 rounded-2xl font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-2xl;
+      background: linear-gradient(45deg, #8b5cf6, #a855f7);
+      color: white;
+      border: none;
+      transform: translateY(0);
+    }
+
+    .action-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4);
+    }
+
+    /* Stats Card */
+    .stats-card {
+      @apply rounded-2xl p-6 border transition-all duration-500 bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .stats-number {
+      @apply text-4xl font-bold mb-2;
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Custom Check Icon */
+    .check-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #10b981, #34d399);
+      margin-right: 8px;
+    }
+
+    /* Enhanced List */
+    .feature-list li {
+      @apply flex items-center mb-3;
+      animation: slideIn 0.6s forwards;
+    }
+
+    .feature-list li:nth-child(1) { animation-delay: 0.4s; }
+    .feature-list li:nth-child(2) { animation-delay: 0.5s; }
+    .feature-list li:nth-child(3) { animation-delay: 0.6s; }
+
+    /* Branch-specific backgrounds */
+    .cs-bg {
+      background: radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.1), transparent 40%),
+                  radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.1), transparent 40%);
+    }
+
+    .ce-bg {
+      background: radial-gradient(circle at 30% 70%, rgba(16, 185, 129, 0.1), transparent 40%),
+                  radial-gradient(circle at 70% 30%, rgba(14, 165, 233, 0.1), transparent 40%);
+    }
+
+    .ee-bg {
+      background: radial-gradient(circle at 20% 70%, rgba(249, 115, 22, 0.1), transparent 40%),
+                  radial-gradient(circle at 80% 20%, rgba(239, 68, 68, 0.1), transparent 40%);
+    }
+
+    /* Header Animation */
+    @keyframes headerGlow {
+      0%, 100% { text-shadow: 0 0 10px rgba(59, 130, 246, 0.5); }
+      50% { text-shadow: 0 0 20px rgba(139, 92, 246, 0.7); }
+    }
+
+    .gradient-text {
+      animation: headerGlow 3s ease-in-out infinite;
+    }
+
+    /* Content fade transition */
+    .content-fade {
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+  </style>
+</head>
+<body class="bg-slate-900 min-h-screen text-gray-100 leading-relaxed">
+
+  <!-- Background Elements -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden">
+    <div class="bg-element bg-circle bg-blue-500 opacity-20" style="width: 300px; height: 300px; top: 10%; left: -10%;"></div>
+    <div class="bg-element bg-circle bg-purple-500 opacity-20" style="width: 200px; height: 200px; top: 60%; right: -5%;"></div>
+    <div class="bg-element bg-circle bg-cyan-500 opacity-20" style="width: 250px; height: 250px; bottom: 20%; left: 10%;"></div>
+    <div class="bg-element bg-circle bg-orange-500 opacity-20" style="width: 180px; height: 180px; top: 40%; right: 15%;"></div>
+  </div>
+
+  <div class="container mx-auto px-4 py-8 max-w-7xl relative z-10">
+
+    <!-- Header -->
+    <header class="text-center mb-16 content-fade">
+      <div class="flex items-center justify-center mb-8">
+        <div class="w-20 h-20 bg-gradient-to-r from-blue-500 via-purple-600 to-cyan-500 rounded-3xl flex items-center justify-center mr-6 shadow-2xl floating">
+          <i class="fas fa-cube text-white text-4xl"></i>
+        </div>
+        <h1 class="text-6xl md:text-7xl font-extrabold gradient-text">Ecosystem Support</h1>
+      </div>
+      <p class="text-2xl md:text-3xl text-gray-300 mb-4">Build by Me !!</p>
+      <p class="text-lg md:text-xl text-gray-400 mb-8 max-w-4xl mx-auto leading-relaxed">
+        Dự án được xây dựng bởi <span class="text-blue-400 font-bold">@author</span> nhằm lưu trữ toàn bộ checklist từ <span class="text-purple-400 font-bold">BNJ</span> 
+        với hệ thống phân nhánh rõ ràng và chức năng chuyên sâu cho từng lĩnh vực kỹ thuật.
+      </p>
+      <div class="w-32 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto rounded-full"></div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="flex flex-wrap justify-center gap-6 mb-16">
+      <button onclick="showSection('cs')" class="nav-link active" data-color="blue">
+        <i class="fas fa-laptop-code"></i>
+        Computer Science
+      </button>
+      <button onclick="showSection('ce')" class="nav-link" data-color="green">
+        <i class="fas fa-microchip"></i>
+        Computer Engineering
+      </button>
+      <button onclick="showSection('ee')" class="nav-link" data-color="orange">
+        <i class="fas fa-bolt"></i>
+        Electrical Engineering
+      </button>
+      <button onclick="showSection('docs')" class="nav-link" data-color="purple">
+        <i class="fas fa-book"></i>
+        Docs
+      </button>
+    </nav>
+
+    <!-- Content Sections -->
+    <div id="content" class="space-y-16">
+
+      <!-- Computer Science -->
+      <div id="cs" class="content-section active cs-bg">
+        <div class="text-center mb-12">
+          <div class="branch-icon bg-gradient-to-r from-blue-500 to-cyan-600 mb-6">
+            <i class="fas fa-brain text-white text-3xl"></i>
+          </div>
+          <h2 class="section-header text-transparent bg-clip-text">Computer Science</h2>
+          <div class="w-24 h-1 bg-gradient-to-r from-blue-400 to-cyan-500 mx-auto rounded-full mb-6"></div>
+          <p class="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+            Tập trung vào lý thuyết, thuật toán, trí tuệ nhân tạo, phát triển phần mềm và hệ thống máy tính. 
+            Đây là nền tảng cho mọi ứng dụng công nghệ hiện đại, từ web đến điện toán đám mây và AI.
+          </p>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          <div class="stats-card text-center">
+            <div class="stats-number">15+</div>
+            <h3 class="text-lg font-semibold text-blue-400">Ngôn ngữ lập trình</h3>
+            <p class="text-gray-300 text-sm">Python, JavaScript, Java, C++, Go, Rust, v.v.</p>
+          </div>
+          <div class="stats-card text-center">
+            <div class="stats-number">8</div>
+            <h3 class="text-lg font-semibold text-blue-400">Hệ thống AI</h3>
+            <p class="text-gray-300 text-sm">TensorFlow, PyTorch, Hugging Face, v.v.</p>
+          </div>
+          <div class="stats-card text-center">
+            <div class="stats-number">12</div>
+            <h3 class="text-lg font-semibold text-blue-400">Framework Web</h3>
+            <p class="text-gray-300 text-sm">React, Angular, Django, Flask, v.v.</p>
+          </div>
+        </div>
+
+        <!-- Feature Cards -->
+        <div class="space-y-8">
+          <div class="feature-card">
+            <div class="flex items-start gap-6">
+              <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0">
+                <i class="fas fa-project-diagram text-white text-2xl"></i>
+              </div>
+              <div class="flex-1">
+                <h3 class="text-3xl font-bold text-blue-400 mb-3">Computer Architecture & Systems</h3>
+                <p class="text-gray-300 text-lg mb-4">
+                  Hiểu sâu về cấu trúc bên trong máy tính, từ CPU, bộ nhớ, cache đến cơ chế pipeline và parallelism. 
+                  Nền tảng cho việc tối ưu hóa hiệu suất phần mềm.
+                </p>
+                <ul class="feature-list space-y-2 text-gray-200">
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>Kiến trúc máy tính:</strong> Von Neumann, Harvard, RISC vs CISC
+                  </li>
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>Hệ thống bộ nhớ:</strong> Cache hierarchy, virtual memory, memory management
+                  </li>
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>Hiệu suất:</strong> Pipeline, superscalar, SIMD, multithreading, multiprocessing
+                  </li>
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>Hệ điều hành:</strong> Process management, scheduling, synchronization, deadlock
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="feature-card">
+            <div class="flex items-start gap-6">
+              <div class="w-16 h-16 bg-gradient-to-r from-green-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0">
+                <i class="fas fa-network-wired text-white text-2xl"></i>
+              </div>
+              <div class="flex-1">
+                <h3 class="text-3xl font-bold text-green-400 mb-3">Computer Network & Security</h3>
+                <p class="text-gray-300 text-lg mb-4">
+                  Từ mô hình OSI đến TCP/IP, giao thức mạng, bảo mật và công cụ phân tích. 
+                  Xây dựng hệ thống mạng an toàn và hiệu quả.
+                </p>
+                <ul class="feature-list space-y-2 text-gray-200">
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>Mô hình mạng:</strong> OSI 7-layer, TCP/IP, HTTP/2, WebSockets
+                  </li>
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>Bảo mật:</strong> SSL/TLS, OAuth, JWT, firewall, intrusion detection
+                  </li>
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>Công cụ:</strong> Wireshark, Nmap, tcpdump, Cisco Packet Tracer
+                  </li>
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>Cloud networking:</strong> VPC, load balancing, CDN, DNS management
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="feature-card">
+            <div class="flex items-start gap-6">
+              <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0">
+                <i class="fas fa-robot text-white text-2xl"></i>
+              </div>
+              <div class="flex-1">
+                <h3 class="text-3xl font-bold text-purple-400 mb-3">Software Development & AI</h3>
+                <p class="text-gray-300 text-lg mb-4">
+                  Phát triển phần mềm, web, trí tuệ nhân tạo, học máy và an ninh mạng. 
+                  Tạo ra các ứng dụng thông minh và tự động hóa.
+                </p>
+                <ul class="feature-list space-y-2 text-gray-200">
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>AI & ML:</strong> TensorFlow, PyTorch, Hugging Face, computer vision
+                  </li>
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>Web development:</strong> React, Node.js, Django, Flask, Spring Boot
+                  </li>
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>Security:</strong> Penetration testing, cryptography, OWASP Top 10
+                  </li>
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>DevOps:</strong> Docker, Kubernetes, CI/CD, monitoring, logging
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Computer Engineering -->
+      <div id="ce" class="content-section ce-bg hidden">
+        <div class="text-center mb-12">
+          <div class="branch-icon bg-gradient-to-r from-green-500 to-teal-600 mb-6">
+            <i class="fas fa-cogs text-white text-3xl"></i>
+          </div>
+          <h2 class="section-header text-transparent bg-clip-text">Computer Engineering</h2>
+          <div class="w-24 h-1 bg-gradient-to-r from-green-400 to-teal-500 mx-auto rounded-full mb-6"></div>
+          <p class="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+            Kết hợp phần cứng và phần mềm: thiết kế hệ thống nhúng, FPGA, vi điều khiển. 
+            Tạo ra các thiết bị thông minh và hệ thống thời gian thực.
+          </p>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          <div class="stats-card text-center">
+            <div class="stats-number">20+</div>
+            <h3 class="text-lg font-semibold text-green-400">Vi điều khiển</h3>
+            <p class="text-gray-300 text-sm">ARM, RISC-V, x86, ESP32, STM32, nRF52, v.v.</p>
+          </div>
+          <div class="stats-card text-center">
+            <div class="stats-number">15</div>
+            <h3 class="text-lg font-semibold text-green-400">FPGA Projects</h3>
+            <p class="text-gray-300 text-sm">Verilog, VHDL, synthesis, place & route</p>
+          </div>
+          <div class="stats-card text-center">
+            <div class="stats-number">8</div>
+            <h3 class="text-lg font-semibold text-green-400">RTOS Systems</h3>
+            <p class="text-gray-300 text-sm">FreeRTOS, Zephyr, ThreadX, RT-Thread, v.v.</p>
+          </div>
+        </div>
+
+        <!-- Feature Cards -->
+        <div class="space-y-8">
+          <div class="feature-card">
+            <div class="flex items-start gap-6">
+              <div class="w-16 h-16 bg-gradient-to-r from-green-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0">
+                <i class="fas fa-cogs text-white text-2xl"></i>
+              </div>
+              <div class="flex-1">
+                <h3 class="text-3xl font-bold text-green-400 mb-3">Computer Architecture & Design</h3>
+                <p class="text-gray-300 text-lg mb-4">
+                  Thiết kế CPU, RISC-V, ARM, FPGA và hệ thống nhúng. Hiểu sâu về mối liên hệ giữa phần cứng và phần mềm.
+                </p>
+                <ul class="feature-list space-y-2 text-gray-200">
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>Processor design:</strong> RISC-V, ARM, x86 Assembly, instruction set architecture
+                  </li>
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>FPGA development:</strong> Verilog/VHDL, synthesis, place & route, timing analysis
+                  </li>
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>Embedded systems:</strong> Arduino, Raspberry Pi, ESP32, STM32, nRF52
+                  </li>
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>Hardware-software co-design:</strong> System-on-Chip (SoC), co-simulation
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="feature-card">
+            <div class="flex items-start gap-6">
+              <div class="w-16 h-16 bg-gradient-to-r from-emerald-500 to-cyan-600 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0">
+                <i class="fas fa-memory text-white text-2xl"></i>
+              </div>
+              <div class="flex-1">
+                <h3 class="text-3xl font-bold text-emerald-400 mb-3">Hardware Integration & Drivers</h3>
+                <p class="text-gray-300 text-lg mb-4">
+                  Viết driver thiết bị, firmware và hệ điều hành thời gian thực (RTOS). 
+                  Kết nối phần cứng với hệ thống phần mềm.
+                </p>
+                <ul class="feature-list space-y-2 text-gray-200">
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>Device drivers:</strong> Linux kernel modules, Windows drivers, USB, PCIe
+                  </li>
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>Firmware development:</strong> C/C++, Rust for embedded systems
+                  </li>
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>Real-time OS:</strong> FreeRTOS, Zephyr, ThreadX, RT-Thread, VxWorks
+                  </li>
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>Bootloaders:</strong> U-Boot, custom bootloaders, secure boot
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="feature-card">
+            <div class="flex items-start gap-6">
+              <div class="w-16 h-16 bg-gradient-to-r from-teal-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0">
+                <i class="fas fa-robot text-white text-2xl"></i>
+              </div>
+              <div class="flex-1">
+                <h3 class="text-3xl font-bold text-teal-400 mb-3">Embedded Systems & IoT</h3>
+                <p class="text-gray-300 text-lg mb-4">
+                  Thiết bị thông minh, cảm biến, robot và truyền thông không dây. 
+                  Xây dựng hệ sinh thái Internet of Things hoàn chỉnh.
+                </p>
+                <ul class="feature-list space-y-2 text-gray-200">
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>IoT platforms:</strong> ESP32, STM32, nRF52, Raspberry Pi, BeagleBone
+                  </li>
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>Communication protocols:</strong> I2C, SPI, UART, CAN, Modbus, MQTT
+                  </li>
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>Wireless technologies:</strong> WiFi, Bluetooth LE, LoRa, Zigbee, NB-IoT
+                  </li>
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>Robotics:</strong> Motor control, sensor fusion, autonomous navigation
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Electrical Engineering -->
+      <div id="ee" class="content-section ee-bg hidden">
+        <div class="text-center mb-12">
+          <div class="branch-icon bg-gradient-to-r from-orange-500 to-red-600 mb-6">
+            <i class="fas fa-bolt text-white text-3xl"></i>
+          </div>
+          <h2 class="section-header text-transparent bg-clip-text">Electrical Engineering</h2>
+          <div class="w-24 h-1 bg-gradient-to-r from-orange-400 to-red-500 mx-auto rounded-full mb-6"></div>
+          <p class="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+            Thiết kế mạch, xử lý tín hiệu, DSP và vi mạch bán dẫn. 
+            Tạo ra các hệ thống điện tử từ đơn giản đến phức tạp.
+          </p>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          <div class="stats-card text-center">
+            <div class="stats-number">50+</div>
+            <h3 class="text-lg font-semibold text-orange-400">Mạch điện tử</h3>
+            <p class="text-gray-300 text-sm">Analog, digital, power, RF, mixed-signal</p>
+          </div>
+          <div class="stats-card text-center">
+            <div class="stats-number">12</div>
+            <h3 class="text-lg font-semibold text-orange-400">DSP Projects</h3>
+            <p class="text-gray-300 text-sm">Filter design, FFT, wavelet, signal processing</p>
+          </div>
+          <div class="stats-card text-center">
+            <div class="stats-number">8</div>
+            <h3 class="text-lg font-semibold text-orange-400">VLSI Designs</h3>
+            <p class="text-gray-300 text-sm">ASIC, FPGA, SoC, RTL design, physical design</p>
+          </div>
+        </div>
+
+        <!-- Feature Cards -->
+        <div class="space-y-8">
+          <div class="feature-card">
+            <div class="flex items-start gap-6">
+              <div class="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-600 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0">
+                <i class="fas fa-bolt text-white text-2xl"></i>
+              </div>
+              <div class="flex-1">
+                <h3 class="text-3xl font-bold text-orange-400 mb-3">Circuit Design & Analysis</h3>
+                <p class="text-gray-300 text-lg mb-4">
+                  Thiết kế mạch analog/digital, PCB và sử dụng công cụ EDA chuyên nghiệp. 
+                  Phân tích và tối ưu hóa hiệu suất mạch điện.
+                </p>
+                <ul class="feature-list space-y-2 text-gray-200">
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>EDA tools:</strong> KiCad, Altium Designer, Eagle, OrCAD, Cadence
+                  </li>
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>Analog circuits:</strong> Amplifiers, filters, oscillators, power supplies
+                  </li>
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>Power electronics:</strong> Linear regulators, switching converters (Buck, Boost, Buck-Boost)
+                  </li>
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>PCB design:</strong> Schematic capture, layout, routing, DRC, manufacturing
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="feature-card">
+            <div class="flex items-start gap-6">
+              <div class="w-16 h-16 bg-gradient-to-r from-red-500 to-pink-600 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0">
+                <i class="fas fa-signal text-white text-2xl"></i>
+              </div>
+              <div class="flex-1">
+                <h3 class="text-3xl font-bold text-red-400 mb-3">Signal Processing & Systems</h3>
+                <p class="text-gray-300 text-lg mb-4">
+                  Xử lý tín hiệu, điều khiển, truyền thông và DSP. 
+                  Phân tích và biến đổi tín hiệu trong các hệ thống điện tử.
+                </p>
+                <ul class="feature-list space-y-2 text-gray-200">
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>Signal transforms:</strong> Fourier, Laplace, Z-Transform, wavelet transform
+                  </li>
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>Digital filters:</strong> FIR, IIR, adaptive filters, filter design methods
+                  </li>
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>Communication systems:</strong> AM/FM, digital modulation, error correction
+                  </li>
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>Control systems:</strong> PID control, state-space, stability analysis
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="feature-card">
+            <div class="flex items-start gap-6">
+              <div class="w-16 h-16 bg-gradient-to-r from-pink-500 to-rose-600 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0">
+                <i class="fas fa-chip text-white text-2xl"></i>
+              </div>
+              <div class="flex-1">
+                <h3 class="text-3xl font-bold text-pink-400 mb-3">VLSI & Semiconductor Design</h3>
+                <p class="text-gray-300 text-lg mb-4">
+                  Thiết kế vi mạch, logic gate, CMOS và sử dụng Verilog/VHDL. 
+                  Tạo ra các chip bán dẫn từ thiết kế đến sản xuất.
+                </p>
+                <ul class="feature-list space-y-2 text-gray-200">
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>RTL design:</strong> Register Transfer Level, synthesis, timing analysis
+                  </li>
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>Chip technologies:</strong> FPGA, ASIC, SoC, microprocessors, microcontrollers
+                  </li>
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>Design tools:</strong> Xilinx Vivado, Intel Quartus, Cadence, Synopsys
+                  </li>
+                  <li><span class="check-icon"><i class="fas fa-check text-xs text-white"></i></span> 
+                    <strong>Semiconductor physics:</strong> CMOS, MOSFET, bipolar junction transistors
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Docs -->
+      <div id="docs" class="content-section hidden text-center">
+        <div class="bg-slate-800/70 backdrop-blur-3xl rounded-3xl p-16 border border-slate-600 hover:shadow-2xl transition-all duration-700 transform hover:scale-105">
+          <div class="branch-icon bg-gradient-to-r from-purple-500 to-pink-600 mb-8 mx-auto">
+            <i class="fas fa-book-open text-white text-4xl"></i>
+          </div>
+          <h2 class="text-5xl font-bold text-purple-400 mb-6">📘 Tài liệu cá nhân</h2>
+          <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
+            Truy cập hệ thống tài liệu học tập, dự án và checklist toàn diện của tôi. 
+            Bao gồm tất cả các lĩnh vực kỹ thuật với nội dung cập nhật liên tục.
+          </p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+            <div class="bg-slate-700/50 rounded-2xl p-6 border border-slate-600">
+              <h3 class="text-2xl font-bold text-blue-400 mb-4">📚 Computer Science</h3>
+              <p class="text-gray-300">Tài liệu về thuật toán, AI, phát triển phần mềm, hệ thống máy tính và mạng.</p>
+            </div>
+            <div class="bg-slate-700/50 rounded-2xl p-6 border border-slate-600">
+              <h3 class="text-2xl font-bold text-green-400 mb-4">🔧 Computer Engineering</h3>
+              <p class="text-gray-300">Tài liệu về FPGA, vi điều khiển, hệ thống nhúng và tích hợp phần cứng-phần mềm.</p>
+            </div>
+            <div class="bg-slate-700/50 rounded-2xl p-6 border border-slate-600">
+              <h3 class="text-2xl font-bold text-orange-400 mb-4">⚡ Electrical Engineering</h3>
+              <p class="text-gray-300">Tài liệu về thiết kế mạch, xử lý tín hiệu, DSP và thiết kế vi mạch.</p>
+            </div>
+            <div class="bg-slate-700/50 rounded-2xl p-6 border border-slate-600">
+              <h3 class="text-2xl font-bold text-cyan-400 mb-4">⚙️ Tools & Utilities</h3>
+              <p class="text-gray-300">Tài liệu về công cụ phát triển, môi trường làm việc và quy trình làm việc.</p>
+            </div>
+          </div>
+
+          <a href="../README.md" target="_blank" class="action-button inline-block px-12 py-5 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-3xl font-bold text-xl transition-all duration-300 shadow-2xl hover:scale-105">
+            <i class="fas fa-external-link-alt mr-3"></i> Truy cập Docs
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center mt-24 pt-12 border-t border-slate-700">
+      <div class="flex items-center justify-center mb-4">
+        <i class="fas fa-heart text-red-500 mr-4 pulse text-2xl"></i>
+        <span class="text-gray-400 text-xl">Built with passion by @author</span>
+      </div>
+      <p class="text-sm text-gray-500 mb-2">© 2024 Ecosystem Support. All rights reserved.</p>
+      <p class="text-xs text-gray-600">Version 2.0 - Updated with enhanced features and detailed information</p>
+    </footer>
+  </div>
+
+  <!-- Tab Switching -->
+  <script>
+    function showSection(id) {
+      // Hide all sections
+      document.querySelectorAll('.content-section').forEach(div => {
+        div.classList.add('hidden');
+        div.classList.remove('active');
+      });
+
+      // Show selected section
+      const section = document.getElementById(id);
+      section.classList.remove('hidden');
+      setTimeout(() => {
+        section.classList.add('active');
+      }, 10);
+
+      // Update navigation
+      document.querySelectorAll('.nav-link').forEach(btn => {
+        btn.classList.remove('active');
+      });
+
+      event.target.classList.add('active');
+    }
+
+    // Initialize on load
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('cs').classList.add('active');
+    });
+  </script>
+</body>
+</html>
